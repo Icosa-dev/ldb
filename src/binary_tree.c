@@ -3,6 +3,12 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+/**
+ * @brief Insert a node into the binary tree
+ *
+ * @param root Pointer-pointer to the root node of the binary tree
+ * @param data Pointer to the data to be stored in the new node
+ */
 void binary_tree_insert(
     struct binary_tree_node **root,
     void *data)
@@ -44,6 +50,12 @@ void binary_tree_insert(
     }
 }
 
+/**
+ * @brief Retrieves the deepest rightmost node of the binary tree.
+ * That is, the node with the greatest value.
+ * @param root Pointer to the root node of the tree
+ * @return Pointer to the deepest rightmost node of the tree
+ */
 static struct binary_tree_node *get_deepest_rightmost_node(struct binary_tree_node *root)
 {
     struct binary_tree_node *temp, *queue[100];
@@ -68,6 +80,11 @@ static struct binary_tree_node *get_deepest_rightmost_node(struct binary_tree_no
     return temp;
 }
 
+/**
+ * @brief Delete's the deepest rightmost node of the binary tree
+ * @param root Pointer to the root node of the binary tree
+ * @param d_node Pointer to the deepest rightmost node of the binary tree
+ */
 static void delete_deepest_rightmost_node(
     struct binary_tree_node *root,
     struct binary_tree_node *d_node)
@@ -117,6 +134,14 @@ static void delete_deepest_rightmost_node(
     }
 }
 
+/**
+ * @brief Delete a node from the binary tree
+ * @param root Pointer-pointer to the root node of the binary tree
+ * @param data Pointer to the data to be removed
+ * @param cmp A function of signature `int (void *, void *)` which dereferences and compares
+ * the value in the nodes of the tree and `data`. This is to ensure the binary tree
+ * implementation functions with multiple data types.
+ */
 void binary_tree_delete(
     struct binary_tree_node **root,
     void *data,
@@ -170,6 +195,14 @@ void binary_tree_delete(
     }
 }
 
+/**
+ * @brief Search for a node with `data`
+ * @param root Pointer to the root node of the binary tree
+ * @param data Pointer to the data which is to be found
+ * @param cmp A function of signature `int (void *, void *)` which dereferences and compares
+ * the value in the nodes of the tree and `data`. This is to ensure the binary tree
+ * implementation functions with multiple data types.
+ */
 struct binary_tree_node *binary_tree_search(
     struct binary_tree_node *root,
     void *data,
