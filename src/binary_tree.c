@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 // TODO: Functions should return error codes instead of void
+// TODO: Functions should be reimplemented without queues
 
 /**
  * @brief Allocate memory for a new binary tree node
@@ -22,7 +23,8 @@ struct binary_tree_node *create_binary_tree_node(int key, void *data_ptr)
 }
 
 /**
- * @brief Insert a new node into the binary tree
+ * @brief Insert a new node into the binary tree or overwrites
+ * an existing one with the same key.
  * @param root_ptr Pointer to the root node of the binary tree
  * @param key The key of the new node to be inserted
  * @param data_ptr Pointer to the data the node will store
@@ -32,41 +34,35 @@ void binary_tree_insert(
     int key,
     void *data_ptr)
 {
-    struct binary_tree_node *new_node = create_binary_tree_node(key, data_ptr);
     if (*root_ptr == NULL)
     {
-        *root_ptr = new_node;
+        *root_ptr = create_binary_tree_node(key, data_ptr);
         return;
     }
 
-    struct binary_tree_node *temp, *queue[100];
-    int front = -1, rear = -1;
-    queue[++rear] = *root_ptr;
+    struct binary_tree_node *current = *root_ptr;
+    struct binary_tree_node *parent = NULL;
 
-    while (front != rear)
+    while (current != NULL)
     {
-        temp = queue[++front];
-
-        if (temp->left == NULL)
+        if (key == current->key)
         {
-            temp->left = new_node;
+            current->data_ptr = data_ptr;
             return;
         }
-        else
-        {
-            queue[++rear] = temp->left;
-        }
 
-        if (temp->right == NULL)
-        {
-            temp->right = new_node;
-            return;
-        }
+        parent = current;
+        if (key < current->key)
+            current = current->left;
         else
-        {
-            queue[++rear] = temp->right;
-        }
+            current = current->right;
     }
+
+    struct binary_tree_node *new_node = create_binary_tree_node(key, data_ptr);
+    if (key < parent->key)
+        parent->left = new_node;
+    else
+        parent->right = new_node;
 }
 
 /**
