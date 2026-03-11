@@ -2,6 +2,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 // TODO: Functions should return error codes instead of void
 
