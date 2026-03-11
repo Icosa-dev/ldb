@@ -3,19 +3,35 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-// TODO: rename instances of struct binary_tree_node ** to node_ptr
+// TODO: Functions should return error codes instead of void
 
 /**
- * @brief Insert a node into the binary tree
- *
- * @param root_ptr Pointer-pointer to the root node of the binary tree
- * @param data Pointer to the data to be stored in the new node
+ * @brief Allocate memory for a new binary tree node
+ * @param key Value for `binary_tree_node.key` in the new node
+ * @param data_ptr Value for `binary_tree_node.data_ptr` in the new node
+ * @return Pointer to the memory allocated to the new binary tree node
+ */
+struct binary_tree_node *create_binary_tree_node(int key, void *data_ptr)
+{
+    struct binary_tree_node *new_node = (struct binary_tree_node *)malloc(sizeof(struct binary_tree_node));
+    new_node->key = key;
+    new_node->data_ptr = data_ptr;
+    new_node->left = NULL;
+    new_node->right = NULL;
+}
+
+/**
+ * @brief Insert a new node into the binary tree
+ * @param root_ptr Pointer to the root node of the binary tree
+ * @param key The key of the new node to be inserted
+ * @param data_ptr Pointer to the data the node will store
  */
 void binary_tree_insert(
     struct binary_tree_node **root_ptr,
-    void *data)
+    int key,
+    void *data_ptr)
 {
-    struct binary_tree_node *new_node = (struct binary_tree_node *)malloc(sizeof(struct binary_tree_node));
+    struct binary_tree_node *new_node = create_binary_tree_node(key, data_ptr);
     if (*root_ptr == NULL)
     {
         *root_ptr = new_node;
@@ -138,23 +154,19 @@ static void delete_deepest_rightmost_node(
 
 /**
  * @brief Delete a node from the binary tree
- * @param root_ptr Pointer-pointer to the root node of the binary tree
- * @param data Pointer to the data to be removed
- * @param cmp A function of signature `int (void *, void *)` which dereferences and compares
- * the value in the nodes of the tree and `data`. This is to ensure the binary tree
- * implementation functions with multiple data types.
+ * @param root_ptr Pointer to the root node
+ * @param key Key of the node to be delete
  */
 void binary_tree_delete(
     struct binary_tree_node **root_ptr,
-    void *data,
-    int (*cmp)(void *a, void *b))
+    int key)
 {
     if (*root_ptr == NULL)
         return;
 
     if ((*root_ptr)->left == NULL && (*root_ptr)->right == NULL)
     {
-        if (cmp((*root_ptr)->left, data) == 0)
+        if ((*root_ptr)->key == key)
         {
             free(*root_ptr);
             *root_ptr = NULL;
@@ -173,7 +185,7 @@ void binary_tree_delete(
     {
         temp = queue[++front];
 
-        if (temp->data == data)
+        if (temp->key == key)
         {
             key_node = temp;
         }
@@ -189,26 +201,23 @@ void binary_tree_delete(
         }
     }
 
-    if (key_node != NULL)
+    if (key_node == NULL)
     {
         struct binary_tree_node *deepest_node = get_deepest_rightmost_node(*root_ptr);
-        key_node->data = deepest_node->data;
+        key_node->key = deepest_node->key;
         delete_deepest_rightmost_node(*root_ptr, deepest_node);
     }
 }
 
 /**
- * @brief Search for a node with `data`
- * @param root Pointer to the root node of the binary tree
- * @param data Pointer to the data which is to be found
- * @param cmp A function of signature `int (void *, void *)` which dereferences and compares
- * the value in the nodes of the tree and `data`. This is to ensure the binary tree
- * implementation functions with multiple data types.
+ * @brief Search the binary tree for a node with a specific key
+ * @param root Root node of the binary tree
+ * @param key Key of the node to find
+ * @return Pointer to the node if found or NULL if not
  */
 struct binary_tree_node *binary_tree_search(
     struct binary_tree_node *root,
-    void *data,
-    int (*cmp)(void *a, void *b))
+    int key)
 {
     if (root == NULL)
         return NULL;
@@ -219,12 +228,12 @@ struct binary_tree_node *binary_tree_search(
 
     while (front != rear)
     {
-        temp = queue[++front];
-
-        if (cmp(temp->data, data))
+        if (temp->key == key)
             return temp;
+
         if (temp->left != NULL)
             queue[++rear] = temp->left;
+
         if (temp->right != NULL)
             queue[++rear] = temp->right;
     }
@@ -232,6 +241,10 @@ struct binary_tree_node *binary_tree_search(
     return NULL;
 }
 
+/**
+ * @brief Free every node of a binary tree
+ * @param root_ptr Pointer to the root node of the binary tree
+ */
 void free_binary_tree(struct binary_tree_node **root_ptr)
 {
     if (root_ptr == NULL || *root_ptr == NULL)

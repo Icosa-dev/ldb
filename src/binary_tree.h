@@ -3,23 +3,25 @@
 
 struct binary_tree_node
 {
-    void *data;
+    int key;
+    void *data_ptr;
     struct binary_tree_node *left, *right;
 };
 
+struct binary_tree_node *create_binary_tree_node(int key, void *data_ptr);
+
 void binary_tree_insert(
     struct binary_tree_node **root_ptr,
-    void *data);
+    int key,
+    void *data_ptr);
 
 void binary_tree_delete(
     struct binary_tree_node **root_ptr,
-    void *data,
-    int (*cmp)(void *a, void *b));
+    int key);
 
 struct binary_tree_node *binary_tree_search(
     struct binary_tree_node *root,
-    void *data,
-    int (*cmp)(void *a, void *b));
+    int key);
 
 void free_binary_tree(struct binary_tree_node **root_ptr);
 
