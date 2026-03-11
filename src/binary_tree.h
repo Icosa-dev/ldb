@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 LJC
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 #ifndef BINARY_TREE_H
 #define BINARY_TREE_H
 
