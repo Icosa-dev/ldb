@@ -3,26 +3,28 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+// TODO: rename instances of struct binary_tree_node ** to node_ptr
+
 /**
  * @brief Insert a node into the binary tree
  *
- * @param root Pointer-pointer to the root node of the binary tree
+ * @param root_ptr Pointer-pointer to the root node of the binary tree
  * @param data Pointer to the data to be stored in the new node
  */
 void binary_tree_insert(
-    struct binary_tree_node **root,
+    struct binary_tree_node **root_ptr,
     void *data)
 {
     struct binary_tree_node *new_node = (struct binary_tree_node *)malloc(sizeof(struct binary_tree_node));
-    if (*root == NULL)
+    if (*root_ptr == NULL)
     {
-        *root = new_node;
+        *root_ptr = new_node;
         return;
     }
 
     struct binary_tree_node *temp, *queue[100];
     int front = -1, rear = -1;
-    queue[++rear] = *root;
+    queue[++rear] = *root_ptr;
 
     while (front != rear)
     {
@@ -136,26 +138,26 @@ static void delete_deepest_rightmost_node(
 
 /**
  * @brief Delete a node from the binary tree
- * @param root Pointer-pointer to the root node of the binary tree
+ * @param root_ptr Pointer-pointer to the root node of the binary tree
  * @param data Pointer to the data to be removed
  * @param cmp A function of signature `int (void *, void *)` which dereferences and compares
  * the value in the nodes of the tree and `data`. This is to ensure the binary tree
  * implementation functions with multiple data types.
  */
 void binary_tree_delete(
-    struct binary_tree_node **root,
+    struct binary_tree_node **root_ptr,
     void *data,
     int (*cmp)(void *a, void *b))
 {
-    if (*root == NULL)
+    if (*root_ptr == NULL)
         return;
 
-    if ((*root)->left == NULL && (*root)->right == NULL)
+    if ((*root_ptr)->left == NULL && (*root_ptr)->right == NULL)
     {
-        if (cmp((*root)->left, data) == 0)
+        if (cmp((*root_ptr)->left, data) == 0)
         {
-            free(*root);
-            *root = NULL;
+            free(*root_ptr);
+            *root_ptr = NULL;
             return;
         }
         else
@@ -164,7 +166,7 @@ void binary_tree_delete(
 
     struct binary_tree_node *temp, *queue[100];
     int front = -1, rear = -1;
-    queue[++rear] = *root;
+    queue[++rear] = *root_ptr;
     struct binary_tree_node *key_node = NULL;
 
     while (front != rear)
@@ -189,9 +191,9 @@ void binary_tree_delete(
 
     if (key_node != NULL)
     {
-        struct binary_tree_node *deepest_node = get_deepest_rightmost_node(*root);
+        struct binary_tree_node *deepest_node = get_deepest_rightmost_node(*root_ptr);
         key_node->data = deepest_node->data;
-        delete_deepest_rightmost_node(*root, deepest_node);
+        delete_deepest_rightmost_node(*root_ptr, deepest_node);
     }
 }
 
@@ -228,4 +230,14 @@ struct binary_tree_node *binary_tree_search(
     }
 
     return NULL;
+}
+
+void free_binary_tree(struct binary_tree_node **root_ptr)
+{
+    if (root_ptr == NULL || *root_ptr == NULL)
+        return;
+    free_binary_tree(&(*root_ptr)->left);
+    free_binary_tree(&(*root_ptr)->right);
+    free(*root_ptr);
+    *root_ptr = NULL;
 }
