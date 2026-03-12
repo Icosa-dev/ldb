@@ -9,6 +9,15 @@
 
 #include <stdbool.h>
 
+/**
+ * @brief Holds multiple data types in binary trees
+ *
+ * The purpose of the memtable is to serve as a way
+ * to manage binary trees of different data types
+ * as one. Each memtable also has a key and is
+ * stored in a binary tree which represents each
+ * database.
+ */
 struct memtable
 {
     int key;
