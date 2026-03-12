@@ -24,4 +24,7 @@ file (GLOB SOURCES "src/*.c")
 add_executable(ldb ${SOURCES})
 target_link_libraries(ldb PRIVATE xxhash)
 
-add_executable(binary_tree_test test/binary_tree_test.c)
+add_executable(binary_tree_test 
+    test/binary_tree_test.c
+    src/binary_tree.c
+)
