@@ -10,8 +10,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-/* TODO(*): Better format C code. Preferably to BSD style guide standards. */
-
 /**
  * @brief Allocate memory for a new binary tree node
  * @param key Value for `binary_tree_node.key` in the new node
@@ -20,7 +18,8 @@
  */
 struct binary_tree_node *create_binary_tree_node(int key, void *data_ptr)
 {
-    struct binary_tree_node *new_node = (struct binary_tree_node *)malloc(sizeof(struct binary_tree_node));
+    struct binary_tree_node *new_node = 
+        (struct binary_tree_node *)malloc(sizeof(struct binary_tree_node));
     new_node->key = key;
     new_node->data_ptr = data_ptr;
     new_node->left = NULL;
@@ -36,9 +35,7 @@ struct binary_tree_node *create_binary_tree_node(int key, void *data_ptr)
  * @param key The key of the new node to be inserted
  * @param data_ptr Pointer to the data the node will store
  */
-void binary_tree_insert(
-    struct binary_tree_node **root_ptr,
-    int key,
+void binary_tree_insert(struct binary_tree_node **root_ptr, int key, 
     void *data_ptr)
 {
     struct binary_tree_node **walker = root_ptr;
@@ -68,8 +65,7 @@ static struct binary_tree_node *get_min_node(struct binary_tree_node *node)
     return current;
 }
 
-static struct binary_tree_node *delete_recursive(
-    struct binary_tree_node *root,
+static struct binary_tree_node *delete_recursive(struct binary_tree_node *root, 
     int key)
 {
     if (root == NULL)
@@ -111,9 +107,7 @@ static struct binary_tree_node *delete_recursive(
  * @param root_ptr Pointer to the root node
  * @param key Key of the node to be delete
  */
-void binary_tree_delete(
-    struct binary_tree_node **root_ptr,
-    int key)
+void binary_tree_delete(struct binary_tree_node **root_ptr, int key)
 {
     if (root_ptr == NULL || *root_ptr == NULL)
         return;
@@ -126,8 +120,7 @@ void binary_tree_delete(
  * @param key Key of the node to find
  * @return Pointer to the node if found or NULL if not
  */
-struct binary_tree_node *binary_tree_search(
-    struct binary_tree_node *root,
+struct binary_tree_node *binary_tree_search(struct binary_tree_node *root, 
     int key)
 {
     struct binary_tree_node *current = root;
