@@ -10,8 +10,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-// TODO: Functions should return error codes instead of void
-// TODO: Functions should be reimplemented without queues
+/* TODO(*): Better format C code. Preferably to BSD style guide standards. */
 
 /**
  * @brief Allocate memory for a new binary tree node
@@ -26,6 +25,8 @@ struct binary_tree_node *create_binary_tree_node(int key, void *data_ptr)
     new_node->data_ptr = data_ptr;
     new_node->left = NULL;
     new_node->right = NULL;
+
+    return new_node;
 }
 
 /**
@@ -40,119 +41,69 @@ void binary_tree_insert(
     int key,
     void *data_ptr)
 {
-    if (*root_ptr == NULL)
-    {
-        *root_ptr = create_binary_tree_node(key, data_ptr);
-        return;
-    }
+    struct binary_tree_node **walker = root_ptr;
 
-    struct binary_tree_node *current = *root_ptr;
-    struct binary_tree_node *parent = NULL;
-
-    while (current != NULL)
+    while (*walker != NULL)
     {
-        if (key == current->key)
+        if (key == (*walker)->key)
         {
-            current->data_ptr = data_ptr;
+            (*walker)->data_ptr = data_ptr;
             return;
         }
 
-        parent = current;
-        if (key < current->key)
-            current = current->left;
+        if (key < (*walker)->key)
+            walker = &((*walker)->left);
         else
-            current = current->right;
+            walker = &((*walker)->right);
     }
 
-    struct binary_tree_node *new_node = create_binary_tree_node(key, data_ptr);
-    if (key < parent->key)
-        parent->left = new_node;
-    else
-        parent->right = new_node;
+    *walker = create_binary_tree_node(key, data_ptr);
 }
 
-/**
- * @brief Retrieves the deepest rightmost node of the binary tree.
- * That is, the node with the greatest value.
- * @param root Pointer to the root node of the tree
- * @return Pointer to the deepest rightmost node of the tree
- */
-static struct binary_tree_node *get_deepest_rightmost_node(struct binary_tree_node *root)
+static struct binary_tree_node *get_min_node(struct binary_tree_node *node)
 {
-    struct binary_tree_node *temp, *queue[100];
-    int front = -1, rear = -1;
-    queue[++rear] == root;
-
-    while (front != rear)
-    {
-        temp = queue[++front];
-
-        if (temp->left != NULL)
-        {
-            queue[++rear] = temp->left;
-        }
-
-        if (temp->right != NULL)
-        {
-            queue[++rear] = temp->right;
-        }
-    }
-
-    return temp;
+    struct binary_tree_node *current = node;
+    while (current && current->left != NULL)
+        current = current->left;
+    return current;
 }
 
-/**
- * @brief Delete's the deepest rightmost node of the binary tree
- * @param root Pointer to the root node of the binary tree
- * @param d_node Pointer to the deepest rightmost node of the binary tree
- */
-static void delete_deepest_rightmost_node(
+static struct binary_tree_node *delete_recursive(
     struct binary_tree_node *root,
-    struct binary_tree_node *d_node)
+    int key)
 {
-    struct binary_tree_node *temp, *queue[100];
-    int front = -1, rear = -1;
-    queue[++rear] = root;
+    if (root == NULL)
+        return NULL;
 
-    while (front != rear)
+    if (key < root->key)
+        root->left = delete_recursive(root->left, key);
+    else if (key > root->key)
+        root->right = delete_recursive(root->right, key);
+    else
     {
-        temp = queue[++front];
-
-        if (temp == d_node)
+        struct binary_tree_node *temp;
+        if (root->left == NULL)
         {
-            temp = NULL;
-            free(d_node);
-            return;
+            temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if (root->right == NULL)
+        {
+            temp = root->left;
+            free(root);
+            return temp;
         }
 
-        if (temp->right != NULL)
-        {
-            if (temp->right == d_node)
-            {
-                temp->right = NULL;
-                free(d_node);
-                return;
-            }
-            else
-            {
-                queue[++rear] = temp->right;
-            }
-        }
+        struct binary_tree_node *successor = get_min_node(root->right);
 
-        if (temp->left != NULL)
-        {
-            if (temp->left == d_node)
-            {
-                temp->left = NULL;
-                free(d_node);
-                return;
-            }
-            else
-            {
-                queue[++rear] = temp->left;
-            }
-        }
+        root->key = successor->key;
+        root->data_ptr = successor->data_ptr;
+
+        root->right = delete_recursive(root->right, successor->key);
     }
+
+    return root;
 }
 
 /**
@@ -164,52 +115,9 @@ void binary_tree_delete(
     struct binary_tree_node **root_ptr,
     int key)
 {
-    if (*root_ptr == NULL)
+    if (root_ptr == NULL || *root_ptr == NULL)
         return;
-
-    if ((*root_ptr)->left == NULL && (*root_ptr)->right == NULL)
-    {
-        if ((*root_ptr)->key == key)
-        {
-            free(*root_ptr);
-            *root_ptr = NULL;
-            return;
-        }
-        else
-            return;
-    }
-
-    struct binary_tree_node *temp, *queue[100];
-    int front = -1, rear = -1;
-    queue[++rear] = *root_ptr;
-    struct binary_tree_node *key_node = NULL;
-
-    while (front != rear)
-    {
-        temp = queue[++front];
-
-        if (temp->key == key)
-        {
-            key_node = temp;
-        }
-
-        if (temp->left != NULL)
-        {
-            queue[++rear] = temp->left;
-        }
-
-        if (temp->right != NULL)
-        {
-            queue[++rear] = temp->right;
-        }
-    }
-
-    if (key_node == NULL)
-    {
-        struct binary_tree_node *deepest_node = get_deepest_rightmost_node(*root_ptr);
-        key_node->key = deepest_node->key;
-        delete_deepest_rightmost_node(*root_ptr, deepest_node);
-    }
+    *root_ptr = delete_recursive(*root_ptr, key);
 }
 
 /**
@@ -222,23 +130,17 @@ struct binary_tree_node *binary_tree_search(
     struct binary_tree_node *root,
     int key)
 {
-    if (root == NULL)
-        return NULL;
+    struct binary_tree_node *current = root;
 
-    struct binary_tree_node *temp, *queue[100];
-    int front = -1, rear = -1;
-    queue[++rear] = root;
-
-    while (front != rear)
+    while (current != NULL)
     {
-        if (temp->key == key)
-            return temp;
+        if (key == current->key)
+            return current;
 
-        if (temp->left != NULL)
-            queue[++rear] = temp->left;
-
-        if (temp->right != NULL)
-            queue[++rear] = temp->right;
+        if (key < current->key)
+            current = current->left;
+        else
+            current = current->right;
     }
 
     return NULL;
