@@ -7,26 +7,21 @@
 #ifndef MEMTABLE_H
 #define MEMTABLE_H
 
-#include <stdbool.h>
+#include "binary_tree.h"
 
-/**
- * @brief Holds multiple data types in binary trees
- *
- * The purpose of the memtable is to serve as a way
- * to manage binary trees of different data types
- * as one. Each memtable also has a key and is
- * stored in a binary tree which represents each
- * database.
+/*
+ * The memtable struct is used to hold the root nodes for trees of each
+ * data type in the database. Each in-memory database has multiple
+ * memtables.
  */
 struct memtable
 {
-    int key;
-    struct binary_tree_node *int_tree,
-        *bool_tree,
-        *double_tree,
-        *string_tree;
+    struct binary_tree_node *int_tree;    /// Root node of the int tree
+    struct binary_tree_node *bool_tree;   /// Root node of the bool tree
+    struct binary_tree_node *double_tree; /// Root node of the double tree
+    struct binary_tree_node *string_tree; /// Root node of the string tree
 };
 
-struct memtable *create_memtable(int key);
+struct memtable *create_memtable(void);
 
 #endif
