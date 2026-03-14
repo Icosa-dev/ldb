@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10.0)
-project(ldb VERSION 0.1.0 LANGUAGES C)
+project(ldb VERSION 0.1.0 LANGUAGES CXX)
 
 include(FetchContent)
 
@@ -19,12 +19,7 @@ include_directories(
     "src/"
 )
 
-file (GLOB SOURCES "src/*.c")
+file (GLOB SOURCES "src/*.cpp")
 
 add_executable(ldb ${SOURCES})
 target_link_libraries(ldb PRIVATE xxhash)
-
-add_executable(binary_tree_test 
-    test/binary_tree_test.c
-    src/binary_tree.c
-)
