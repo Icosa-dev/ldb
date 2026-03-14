@@ -7,7 +7,7 @@
 #include "BinaryTree.h"
 
 template <typename T>
-Node<T> *BinaryTree<T>::delete_recursive(Node<T> *current, T value)
+Node<T> *BinaryTree<T>::delete_recursive(Node<T> *current, int key)
 {
     if (current == nullptr)
         return nullptr;
@@ -56,21 +56,21 @@ Node<T> *BinaryTree<T>::find_min(Node<T> *node)
 }
 
 template <typename T>
-bool BinaryTree<T>::search_recursive(Node<T> *current, T value)
+bool BinaryTree<T>::search_recursive(Node<T> *current, int key)
 {
     if (current == nullptr)
         return false;
-    if (current->data == value)
+    if (current->data == key)
         return true;
-    return search_recursive(current->left, value) ||
-           search_recursive(current->right, value);
+    return search_recursive(current->left, key) ||
+           search_recursive(current->right, key);
 }
 
 template <typename T>
-Node<T> *BinaryTree<T>::insert_recursive(Node<T> *node, T value)
+Node<T> *BinaryTree<T>::insert_recursive(Node<T> *node, int key, T value)
 {
     if (node == nullptr)
-        return new Node<T>(value);
+        return new Node<T>(key, value);
 
     if (value < node->data)
         node->left = insert_recursive(node->left, value);
@@ -84,19 +84,19 @@ template <typename T>
 BinaryTree<T>::BinaryTree() : root(nullptr) {}
 
 template <typename T>
-void BinaryTree<T>::insert_node(T value)
+void BinaryTree<T>::insert_node(int key, T value)
 {
-    root = insert_recursive(root, value);
+    root = insert_recursive(root, key, value);
 }
 
 template <typename T>
-void BinaryTree<T>::delete_node(T value)
+void BinaryTree<T>::delete_node(int key)
 {
-    root = delete_recursive(root, value);
+    root = delete_recursive(root, key);
 }
 
 template <typename T>
-bool BinaryTree<T>::search(T value)
+bool BinaryTree<T>::search(int key)
 {
     return search_recursive(root, value);
 }

@@ -10,7 +10,8 @@ template <typename T>
 class Node
 {
 public:
-    T data;
+    int key;
+    T value;
     Node *left;
     Node *right;
 };
@@ -21,15 +22,15 @@ class BinaryTree
 private:
     Node<T> *root;
 
-    Node<T> *delete_recursive(Node<T> *current, T value);
+    Node<T> *delete_recursive(Node<T> *current, int key);
     Node<T> *find_min(Node<T> *node);
-    bool search_recursive(Node<T> *current, T value);
-    Node<T> *insert_recursive(Node<T> *node, T value);
+    bool search_recursive(Node<T> *current, int key);
+    Node<T> *insert_recursive(Node<T> *node, int key, T value);
 
 public:
     BinaryTree() : root(nullptr);
 
-    void insert_node(T value);
-    void delete_node(T value);
-    bool search(T value);
+    void insert_node(int key, T value);
+    void delete_node(int key);
+    bool search(int key);
 };
