@@ -6,45 +6,35 @@
 
 #include "BinaryTree.h"
 
+#include <memory>
+
 template <typename T>
-Node<T> *BinaryTree<T>::delete_recursive(Node<T> *current, int key)
+Node<T>::Node(int key, T value) {}
+
+template <typename T>
+std::unique_ptr<Node<T>> BinaryTree<T>::delete_recursive(
+    std::unique_ptr<Node<T>> current, int key)
 {
-    if (current == nullptr)
+    if (!current)
         return nullptr;
 
-    if (current->data == value)
-    {
-        if (current->left == nullptr && current->right == nullptr)
-        {
-            delete current;
-            return nullptr;
-        }
-
-        if (current->left == nullptr)
-        {
-            Node<T> *temp = current->right;
-            delete current;
-            return temp;
-        }
-
-        if (current->right == nullptr)
-        {
-            Node<T> *temp = current->left;
-            delete current;
-            return temp;
-        }
-
-        Node<T> *successor = find_min(current->right);
-        current->data = successor->data;
-        current->right = delete_recursive(current->right, successor->data);
-    }
+    if (key < current->key)
+        current->left = delete_recursive(std::move(current->left), key);
+    else if (key < current->key)
+        current->right = delete_recursive(std::move(current->right), key);
     else
     {
-        current->left = delete_recursive(current->left, value);
-        current->right = delete_recursive(current->right, value);
-    }
+        if (!current->left)
+            return std::move(current->right);
+        if (!current->right)
+            return std::move(current->left);
 
-    return current;
+        Node<T> *successor = find_min(current->right.get());
+        current->key = successor->key;
+        current->value = successor->value;
+        current->right = delete_recursive(
+            std::move(current->right), successor->key);
+    }
 }
 
 template <typename T>
@@ -67,15 +57,16 @@ bool BinaryTree<T>::search_recursive(Node<T> *current, int key)
 }
 
 template <typename T>
-Node<T> *BinaryTree<T>::insert_recursive(Node<T> *node, int key, T value)
+std::unique_ptr<Node<T>> BinaryTree<T>::insert_recursive(
+    std::unique_ptr<Node<T>> node, int key, T value)
 {
     if (node == nullptr)
-        return new Node<T>(key, value);
+        return std::make_unique<Node<T>>(key, value);
 
     if (value < node->data)
-        node->left = insert_recursive(node->left, value);
+        node->left = insert_recursive(node->left, key);
     else
-        node->right = insert_recursive(node->right, value);
+        node->right = insert_recursive(node->right, key);
 
     return node;
 }
