@@ -23,7 +23,6 @@ namespace ldb
      */
     typedef std::string ascii;
     typedef int64_t bigint;
-    typedef bool boolean;
     typedef u_int32_t date;
     typedef u_int32_t inet_ipv4;
     typedef boost::multiprecision::uint128_t inet_ipv6;
