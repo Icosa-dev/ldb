@@ -30,6 +30,22 @@ private:
     BinaryTree<ldb::tinyint> tinyint_tree;
     BinaryTree<ldb::uuid> uuid_tree;
 
+    template <typename T>
+    BinaryTree<T> get_current_tree(TypeCode type);
+
 public:
     Table();
+
+    /* CRUD operations on table */
+    template <typename T>
+    void create(int key, T value, TypeCode type);
+
+    template <typename T>
+    T read(int key, TypeCode);
+
+    template <typename T>
+    void update(int key, T value, TypeCode type);
+
+    template <typename T>
+    void del(int key, TypeCode type);
 };
