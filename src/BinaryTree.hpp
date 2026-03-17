@@ -69,7 +69,7 @@ private:
     {
         if (current == nullptr)
             return false;
-        if (current->data == key)
+        if (current->key == key)
             return true;
         return SearchRecursive(current->left, key) ||
                SearchRecursive(current->right, key);
@@ -81,12 +81,25 @@ private:
         if (node == nullptr)
             return std::make_unique<Node<T>>(key, value);
 
-        if (value < node->data)
+        if (key < node->key)
             node->left = InsertRecursive(node->left, key);
         else
             node->right = InsertRecursive(node->right, key);
 
         return node;
+    }
+
+    Node<T> *GetNodeRecursive(Node<T> *current, int key)
+    {
+        if (current == nullptr)
+            return nullptr;
+        if (current->key == key)
+            return current;
+
+        if (key < current->key)
+            return GetNodeRecursive(current->left, key);
+        else
+            return GetNodeRecursive(current->right, key);
     }
 
 public:
@@ -105,5 +118,10 @@ public:
     bool Search(int key)
     {
         return SearchRecursive(root, value);
+    }
+
+    Node<T> *GetNode(int key)
+    {
+        return GetNodeRecursive(root, key);
     }
 };
