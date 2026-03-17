@@ -33,7 +33,7 @@ private:
 
         if (key < current->key)
             current->left = DeleteRecursive(std::move(current->left), key);
-        else if (key < current->key)
+        else if (key > current->key)
             current->right = DeleteRecursive(std::move(current->right), key);
         else
         {
