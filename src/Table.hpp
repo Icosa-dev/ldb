@@ -14,21 +14,21 @@
 class Table
 {
 private:
-    BinaryTree<ldb::ascii> asciiTree;
-    BinaryTree<ldb::bigint> bigintTree;
+    BinaryTree<LDB::Ascii> asciiTree;
+    BinaryTree<LDB::BigInt> bigintTree;
     BinaryTree<bool> booleanTree;
-    BinaryTree<ldb::date> dateTree;
+    BinaryTree<LDB::Date> dateTree;
     BinaryTree<double> doubleTree;
     BinaryTree<float> floatTree;
-    BinaryTree<ldb::inet_ipv4> inetIpv4Tree;
-    BinaryTree<ldb::inet_ipv6> inetIpv6Tree;
+    BinaryTree<LDB::InetIpv4> inetIpv4Tree;
+    BinaryTree<LDB::InetIpv4> inetIpv6Tree;
     BinaryTree<int32_t> integerTree;
-    BinaryTree<ldb::smallint> smallintTree;
-    BinaryTree<ldb::text> textTree;
-    BinaryTree<ldb::time> timeTree;
-    BinaryTree<ldb::timestamp> timestampTree;
-    BinaryTree<ldb::tinyint> tinyintTree;
-    BinaryTree<ldb::uuid> uuidTree;
+    BinaryTree<LDB::SmallInt> smallintTree;
+    BinaryTree<LDB::Text> textTree;
+    BinaryTree<LDB::Time> timeTree;
+    BinaryTree<LDB::Timestamp> timestampTree;
+    BinaryTree<LDB::TinyInt> tinyintTree;
+    BinaryTree<LDB::Uuid> uuidTree;
 
     template <typename T>
     BinaryTree<T> GetCurrentType(TypeCode type);

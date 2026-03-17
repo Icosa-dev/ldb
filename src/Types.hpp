@@ -26,7 +26,7 @@ enum TypeCode
     UUID
 };
 
-namespace ldb
+namespace LDB
 {
     /*
      * Types are derived from Apache Cassandra's types. However a few
@@ -43,15 +43,15 @@ namespace ldb
      * varint: arbitrary-precission int
      * vector: "fixed length non-null, flattened array of float values"
      */
-    typedef std::string ascii;
-    typedef int64_t bigint;
-    typedef uint32_t date;
-    typedef uint32_t inet_ipv4;
-    typedef boost::multiprecision::uint128_t inet_ipv6;
-    typedef int16_t smallint;
-    typedef std::string text; /* FIX: This needs to encode UTF-8 */
-    typedef int64_t time;
-    typedef int64_t timestamp;
-    typedef int8_t tinyint;
-    typedef boost::uuids::uuid uuid;
+    using Ascii = std::string;
+    using BigInt = int64_t;
+    using Date = uint32_t;
+    using InetIpv4 = uint32_t;
+    using InetIpv6 = boost::multiprecision::uint128_t;
+    using SmallInt = int16_t;
+    using Text = std::string; /* FIX: This needs to encode UTF-8 */
+    using Time = int64_t;
+    using Timestamp = int64_t;
+    using TinyInt = int8_t;
+    using Uuid = boost::uuids::uuid;
 };
