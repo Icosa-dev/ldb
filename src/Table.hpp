@@ -14,38 +14,38 @@
 class Table
 {
 private:
-    BinaryTree<ldb::ascii> ascii_tree;
-    BinaryTree<ldb::bigint> bigint_tree;
-    BinaryTree<bool> boolean_tree;
-    BinaryTree<ldb::date> date_tree;
-    BinaryTree<double> double_tree;
-    BinaryTree<float> float_tree;
-    BinaryTree<ldb::inet_ipv4> inet_ipv4_tree;
-    BinaryTree<ldb::inet_ipv6> inet_ipv6_tree;
-    BinaryTree<int32_t> integer_tree;
-    BinaryTree<ldb::smallint> smallint_tree;
-    BinaryTree<ldb::text> text_tree;
-    BinaryTree<ldb::time> time_tree;
-    BinaryTree<ldb::timestamp> timestamp_tree;
-    BinaryTree<ldb::tinyint> tinyint_tree;
-    BinaryTree<ldb::uuid> uuid_tree;
+    BinaryTree<ldb::ascii> asciiTree;
+    BinaryTree<ldb::bigint> bigintTree;
+    BinaryTree<bool> booleanTree;
+    BinaryTree<ldb::date> dateTree;
+    BinaryTree<double> doubleTree;
+    BinaryTree<float> floatTree;
+    BinaryTree<ldb::inet_ipv4> inetIpv4Tree;
+    BinaryTree<ldb::inet_ipv6> inetIpv6Tree;
+    BinaryTree<int32_t> integerTree;
+    BinaryTree<ldb::smallint> smallintTree;
+    BinaryTree<ldb::text> textTree;
+    BinaryTree<ldb::time> timeTree;
+    BinaryTree<ldb::timestamp> timestampTree;
+    BinaryTree<ldb::tinyint> tinyintTree;
+    BinaryTree<ldb::uuid> uuidTree;
 
     template <typename T>
-    BinaryTree<T> get_current_tree(TypeCode type);
+    BinaryTree<T> GetCurrentType(TypeCode type);
 
 public:
     Table();
 
     /* CRUD operations on table */
     template <typename T>
-    void create(int key, T value, TypeCode type);
+    void Create(int key, T value, TypeCode type);
 
     template <typename T>
-    T read(int key, TypeCode);
+    T Read(int key, TypeCode);
 
     template <typename T>
-    void update(int key, T value, TypeCode type);
+    void Update(int key, T value, TypeCode type);
 
     template <typename T>
-    void del(int key, TypeCode type);
+    void Delete(int key, TypeCode type);
 };
