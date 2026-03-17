@@ -1,3 +1,3 @@
-# ldb
+# LDB
 
-`ldb` is a minimalist wide-column database management system.
+`LDB` is a minimalist wide-column database management system.
