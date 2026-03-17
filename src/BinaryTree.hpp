@@ -25,6 +25,14 @@ class BinaryTree
 private:
     std::unique_ptr<Node<T>> root;
 
+    /*
+     * "Use source files for implementation" they said.
+     * Oh but except for templates no those all have to be
+     * implemented in the header.
+     * I love this language. Oh and btw
+     *
+     * TODO: Write documentation for class methods.
+     */
     std::unique_ptr<Node<T>> DeleteRecursive(
         std::unique_ptr<Node<T>> current, int key)
     {
