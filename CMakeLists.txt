@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.10.0)
-project(ldb VERSION 0.1.0 LANGUAGES CXX)
+project(
+    ldb 
+    VERSION 0.1.0
+    SPDX-LICENSE "Apache-2.0"
+    DESCRIPTION "A minimalist wide-column database management system"
+    HOMEPAGE_URL "https://github.com/Icosa-dev/LDB"
+    LANGUAGES CXX
+)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
