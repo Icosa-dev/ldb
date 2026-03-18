@@ -3,9 +3,9 @@ project(ldb VERSION 0.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# BUILD DEPENDENCIES
-find_package(Boost CONFIG REQUIRED)
-find_package(xxHash CONFIG REQUIRED)
+include(cmake/CPM.cmake)
+CPMAddPackage("gh:boostorg/multiprecision#Boost_1_89_0")
+CPMAddPackage("gh:Cyan4973/xxHash#v0.8.3")
 
 add_compile_options(-Wall -Wextra)
 
@@ -16,8 +16,8 @@ target_include_directories(ldb PRIVATE
     "src/"
 )
 target_link_libraries(ldb PRIVATE 
-    xxHash::xxhash
-    Boost::boost
+    xxhash
+    Boost::multiprecision
 )
 
 add_subdirectory(
