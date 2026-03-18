@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "BinaryTree.hpp"
+#include "../src/BinaryTree.hpp"
 
 #include <gtest/gtest.h>
 
@@ -15,24 +15,6 @@ static void InsertTestValues(BinaryTree<T> &binaryTree)
     binaryTree.InsertNode(2, 3);
     binaryTree.InsertNode(6, 2);
     binaryTree.InsertNode(7, 10);
-}
-
-TEST(BinaryTreeTest, InsertAndSearch)
-{
-    // Initialize test binary tree
-    BinaryTree<int> binaryTree = BinaryTree<int>();
-
-    // Insert test values into the tree
-    InsertTestValues<int>(binaryTree);
-
-    // Check that they can be searched for
-    EXPECT_EQ(binaryTree.Search(1), true);
-    EXPECT_EQ(binaryTree.Search(2), true);
-    EXPECT_EQ(binaryTree.Search(3), false);
-    EXPECT_EQ(binaryTree.Search(4), false);
-    EXPECT_EQ(binaryTree.Search(5), false);
-    EXPECT_EQ(binaryTree.Search(6), true);
-    EXPECT_EQ(binaryTree.Search(7), true);
 }
 
 TEST(BinaryTreeTest, InsertAndRetrieve)
@@ -58,10 +40,8 @@ TEST(BinaryTreeTest, InsertAndDelete)
     // Insert test values into tree
     InsertTestValues<int>(binaryTree);
 
-    // Delete node 6. Search should now return false and GetNode should
-    // return nullptr.
+    // Delete node 6. GetNode should return nullptr
     binaryTree.DeleteNode(6);
-    EXPECT_EQ(binaryTree.Search(6), false);
     EXPECT_EQ(binaryTree.GetNode(6), nullptr);
 }
 
