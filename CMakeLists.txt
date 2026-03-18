@@ -9,8 +9,16 @@ project(
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(BOOST_ENABLE_CMAKE ON CACHE BOOL "Enable Boost CMake support")
+set(BOOST_INCLUDE_LIBRARIES multiprecision uuid CACHE STRING "" FORCE)
+
 include(cmake/CPM.cmake)
-CPMAddPackage("gh:boostorg/boost#boost-1.90.0")
+CPMAddPackage(
+    NAME Boost
+    VERSION 1.90.0
+    GITHUB_REPOSITORY boostorg/boost
+    GIT_TAG boost-1.90.0
+)
 CPMAddPackage("gh:Cyan4973/xxHash#v0.8.3")
 
 add_compile_options(-Wall -Wextra)
