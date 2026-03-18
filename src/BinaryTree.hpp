@@ -6,56 +6,65 @@
 
 #pragma once
 
-#include <memory>
-
 template <typename T>
 class Node
 {
 public:
     int key;
     T value;
-    std::unique_ptr<Node<T>> left, right;
+    Node *left, *right;
 
-    Node(int key, T value) : key(key), value(value) {}
+    Node(int key, T value) : key(key), value(value),
+                             left(nullptr), right(nullptr) {}
 };
 
 template <typename T>
 class BinaryTree
 {
 private:
-    std::unique_ptr<Node<T>> root;
+    Node<T> *root;
 
-    /*
-     * "Use source files for implementation" they said.
-     * Oh but except for templates no those all have to be
-     * implemented in the header.
-     * I love this language. Oh and btw
-     *
-     * TODO: Write documentation for class methods.
-     */
-    std::unique_ptr<Node<T>> DeleteRecursive(
-        std::unique_ptr<Node<T>> current, int key)
+    void Clear(Node<T> *node)
+    {
+        if (node)
+        {
+            Clear(node->left);
+            Clear(node->right);
+            delete node;
+        }
+    }
+
+    Node<T> *DeleteRecursive(Node<T> *current, int key)
     {
         if (!current)
             return nullptr;
 
         if (key < current->key)
-            current->left = DeleteRecursive(std::move(current->left), key);
+            current->left = DeleteRecursive(current->left, key);
         else if (key > current->key)
-            current->right = DeleteRecursive(std::move(current->right), key);
+            current->right = DeleteRecursive(current->right, key);
         else
         {
             if (!current->left)
-                return std::move(current->right);
+            {
+                Node<T> *temp = current->right;
+                delete current;
+                return temp;
+            }
             if (!current->right)
-                return std::move(current->left);
+            {
+                Node<T> *temp = current->left;
+                delete current;
+                return temp;
+            }
 
-            Node<T> *successor = FindMin(current->right.get());
+            Node<T> *successor = FindMin(current->right);
             current->key = successor->key;
             current->value = successor->value;
-            current->right = DeleteRecursive(
-                std::move(current->right), successor->key);
+            current->right = DeleteRecursive(current->right, successor->key);
         }
+
+        return current;
     }
 
     Node<T> *FindMin(Node<T> *node)
@@ -65,62 +74,51 @@ private:
         return node;
     }
 
-    bool SearchRecursive(Node<T> *current, int key)
-    {
-        if (current == nullptr)
-            return false;
-        if (current->key == key)
-            return true;
-        return SearchRecursive(current->left, key) ||
-               SearchRecursive(current->right, key);
-    }
-
-    std::unique_ptr<Node<T>> InsertRecursive(std::unique_ptr<Node<T>> node,
-                                             int key, T value)
+    Node<T> *InsertRecursive(Node<T> *node, int key, T value)
     {
         if (node == nullptr)
-            return std::make_unique<Node<T>>(key, value);
+            return new Node<T>(key, value);
 
         if (key < node->key)
-            node->left = InsertRecursive(node->left, key);
+            node->left = InsertRecursive(node->left, key, value);
         else
-            node->right = InsertRecursive(node->right, key);
+            node->right = InsertRecursive(node->right, key, value);
 
         return node;
     }
 
-    Node<T> *GetNodeRecursive(Node<T> *current, int key)
+    Node<T> *GetNodeRecursive(Node<T> *node, int key)
     {
-        if (current == nullptr)
+        if (!node)
             return nullptr;
-        if (current->key == key)
-            return current;
+        if (node->key == key)
+            return node;
 
-        if (key < current->key)
-            return GetNodeRecursive(current->left, key);
+        if (key < node->key)
+            return GetNodeRecursive(node->left, key);
         else
-            return GetNodeRecursive(current->right, key);
+            return GetNodeRecursive(node->right, key);
     }
 
 public:
     BinaryTree() : root(nullptr) {}
 
-    void InsertNode(int key, T value)
+    ~BinaryTree()
+    {
+        Clear(root);
+    }
+
+    inline void InsertNode(int key, T value)
     {
         root = InsertRecursive(root, key, value);
     }
 
-    void DeleteNode(int key)
+    inline void DeleteNode(int key)
     {
         root = DeleteRecursive(root, key);
     }
 
-    bool Search(int key)
-    {
-        return SearchRecursive(root, value);
-    }
-
-    Node<T> *GetNode(int key)
+    inline Node<T> *GetNode(int key)
     {
         return GetNodeRecursive(root, key);
     }
