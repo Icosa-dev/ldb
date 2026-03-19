@@ -23,7 +23,7 @@ private:
     BinaryTree<LDB::InetIpv4> inetIpv4Tree;
     BinaryTree<LDB::InetIpv4> inetIpv6Tree;
     BinaryTree<int32_t> integerTree;
-    BinaryTree<LDB::SmallInt> smallntTree;
+    BinaryTree<LDB::SmallInt> smallIntTree;
     BinaryTree<LDB::Text> textTree;
     BinaryTree<LDB::Time> timeTree;
     BinaryTree<LDB::Timestamp> timestampTree;
@@ -31,43 +31,40 @@ private:
     BinaryTree<LDB::Uuid> uuidTree;
 
     template <typename T>
-    BinaryTree<T> GetCurrentTree(TypeCode type)
+    BinaryTree<T> &GetTree()
     {
-        switch (type)
-        {
-        case ASCII:
+        if constexpr (std::is_same_v<T, LDB::Ascii>)
             return asciiTree;
-        case BIGINT:
-            return bigintTree;
-        case BOOLEAN:
+        else if constexpr (std::is_same_v<T, LDB::BigInt>)
+            return bigIntTree;
+        else if constexpr (std::is_same_v<T, bool>)
             return booleanTree;
-        case DATE:
+        else if constexpr (std::is_same_v<T, LDB::Date>)
             return dateTree;
-        case DOUBLE:
+        else if constexpr (std::is_same_v<T, double>)
             return doubleTree;
-        case FLOAT:
+        else if constexpr (std::is_same_v<T, float>)
             return floatTree;
-        case INET_IPV4:
+        else if constexpr (std::is_same_v<T, LDB::InetIpv4>)
             return inetIpv4Tree;
-        case INET_IPV6:
+        else if constexpr (std::is_same_v<T, LDB::InetIpv6>)
             return inetIpv6Tree;
-        case INTEGER:
+        else if constexpr (std::is_same_v<T, int32_t>)
             return integerTree;
-        case SMALLINT:
+        else if constexpr (std::is_same_v<T, LDB::SmallInt>)
             return smallIntTree;
-        case TEXT:
+        else if constexpr (std::is_same_v<T, LDB::Text>)
             return textTree;
-        case TIME:
+        else if constexpr (std::is_same_v<T, LDB::Time>)
             return timeTree;
-        case TIMESTAMP:
+        else if constexpr (std::is_same_v<T, LDB::Timestamp>)
             return timestampTree;
-        case TINYINT:
+        else if constexpr (std::is_same_v<T, LDB::TinyInt>)
             return tinyIntTree;
-        case UUID:
+        else if constexpr (std::is_same_v<T, LDB::Uuid>)
             return uuidTree;
-        default:
-            return nullptr;
-        }
+        else
+            static_assert(false, "Unsupported type for Table");
     }
 
 public:
@@ -75,35 +72,35 @@ public:
 
     /* CRUD operations on table */
     template <typename T>
-    void Create(int key, T value, TypeCode type)
+    void Create(int key, T value)
     {
-        BinaryTree<T> currentTree = GetCurrentTree<T>(type);
+        auto& currentTree = GetCurrentTree<T>();
 
         if (!currentTree.Search(key))
-            currentTree.InsertNode(key, value)
+            currentTree.InsertNode(key, value);
     }
 
     template <typename T>
-    T Read(int key, TypeCode)
+    T Read(int key)
     {
-        BinaryTree<T> currentTree = GetCurrentTree<T>(type);
+        auto& currentTree = GetCurrentTree<T>()
 
         return currentTree.GetNode(key)->value;
     }
 
     template <typename T>
-    void Update(int key, T value, TypeCode type)
+    void Update(int key, T value)
     {
-        BinaryTree<T> currentTree = GetCurrentTree<T>(type);
+        auto& currentTree = GetCurrentTree<T>()
 
         if (currentTree.Search(key))
             currentTree.GetNode(key)->value = value;
     }
 
     template <typename T>
-    void Delete(int key, TypeCode type)
+    void Delete(int key)
     {
-        BinaryTree<T> currentTree = GetCurrentTree<T>(type);
+        auto& currentTree = GetCurrentTree<T>()
 
         currentTree.DeleteNode(key);
     }
