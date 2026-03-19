@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include "../src/BinaryTree.hpp"
+#include "../src/BinaryTree.h"
 
 #include <gtest/gtest.h>
 
@@ -17,7 +17,7 @@ static void InsertTestValues(BinaryTree<T> &binaryTree)
     binaryTree.InsertNode(7, 10);
 }
 
-TEST(BinaryTreeTest, InsertAndRetrieve)
+TEST(LDBBinaryTreeTest, InsertAndRetrieve)
 {
     // Initialize test binary tree
     BinaryTree<int> binaryTree = BinaryTree<int>();
@@ -32,7 +32,7 @@ TEST(BinaryTreeTest, InsertAndRetrieve)
     EXPECT_EQ(binaryTree.GetNode(7)->value, 10);
 }
 
-TEST(BinaryTreeTest, InsertAndDelete)
+TEST(LDBBinaryTreeTest, InsertAndDelete)
 {
     // Initialize test binary tree
     BinaryTree<int> binaryTree = BinaryTree<int>();
