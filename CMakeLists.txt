@@ -11,8 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ### Package Management
 include(cmake/CPM.cmake)
-CPMAddPackage("gh:boostorg/multiprecision#boost-1.90.0")
-CPMAddPackage("gh:boostorg/uuid#boost-1.90.0")
+CPMAddPackage("gh:boostorg/boost#boost-1.90.0")
 CPMAddPackage("gh:Cyan4973/xxHash#v0.8.3")
 
 add_compile_options(-Wall -Wextra)
