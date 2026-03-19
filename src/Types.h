@@ -4,28 +4,6 @@
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/uuid/uuid.hpp>
 
-/*
- * Type codes passed to functions which deal with Table objects.
- * NOTE: This feels very hack-y and should be re-implemented. */
-enum TypeCode
-{
-    ASCII,
-    BIGINT,
-    BOOLEAN,
-    DATE,
-    DOUBLE,
-    FLOAT,
-    INET_IPV4,
-    INET_IPV6,
-    INTEGER,
-    SMALLINT,
-    TEXT,
-    TIME,
-    TIMESTAMP,
-    TINYINT,
-    UUID
-};
-
 namespace LDB
 {
     /*
