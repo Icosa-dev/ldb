@@ -7,9 +7,8 @@
 #pragma once
 
 template <typename T>
-class Node
+struct Node
 {
-public:
     int key;
     T value;
     Node *left, *right;
