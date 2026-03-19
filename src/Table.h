@@ -71,7 +71,7 @@ private:
     }
 
 public:
-    Table();
+    Table() {}
 
     /* CRUD operations on table */
     template <typename T>
