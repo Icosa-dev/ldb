@@ -8,8 +8,8 @@
 
 #include <string>
 
-#include "BinaryTree.hpp"
-#include "Types.hpp"
+#include "BinaryTree.h"
+#include "Types.h"
 
 class Table
 {
