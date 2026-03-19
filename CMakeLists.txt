@@ -9,16 +9,10 @@ project(
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(BOOST_ENABLE_CMAKE ON CACHE BOOL "Enable Boost CMake support")
-set(BOOST_INCLUDE_LIBRARIES multiprecision uuid CACHE STRING "" FORCE)
-
+### Package Management
 include(cmake/CPM.cmake)
-CPMAddPackage(
-    NAME Boost
-    VERSION 1.90.0
-    GITHUB_REPOSITORY boostorg/boost
-    GIT_TAG boost-1.90.0
-)
+CPMAddPackage("gh:boostorg/multiprecision#boost-1.90.0")
+CPMAddPackage("gh:boostorg/uuid#boost-1.90.0")
 CPMAddPackage("gh:Cyan4973/xxHash#v0.8.3")
 
 add_compile_options(-Wall -Wextra)
@@ -28,6 +22,7 @@ file (GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 add_executable(ldb ${SOURCES})
 target_include_directories(ldb PRIVATE
     "src/"
+    ${boost_SOURCE_DIR}
 )
 target_link_libraries(ldb PRIVATE 
     xxhash
