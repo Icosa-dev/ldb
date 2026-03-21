@@ -28,12 +28,15 @@ private:
     >;
 
     Trees trees;
+    bool isActive = false; // tables are inactive by default
 public:
     Table() {}
 
     template <typename T>
     void Create(uint32_t key, T value)
     {
+        if (!isActive) throw std::runtime_error("Table is inactive");
+
         BinaryTree<T> &currentTree = std::get<BinaryTree<T>>(trees);
 
         if (!currentTree.GetNode(key))
@@ -54,6 +57,8 @@ public:
     template <typename T>
     void Update(uint32_t key, T value)
     {
+        if (!isActive) throw std::runtime_error("Table is inactive");
+
         BinaryTree<T> &currentTree = std::get<BinaryTree<T>>(trees);
         Node<T> *node = currentTree.GetNode(key);
 
@@ -64,9 +69,26 @@ public:
     template <typename T>
     void Delete(uint32_t key)
     {
+        if (!isActive) throw std::runtime_error("Table is inactive");
+
         BinaryTree<T> &currentTree = std::get<BinaryTree<T>>(trees);
         
         if (currentTree.GetNode(key))
             currentTree.DeleteNode(key);
+    }
+
+    void Activate()
+    {
+        isActive = true;
+    }
+
+    void Deactivate()
+    {
+        isActive = false;
+    }
+
+    bool IsActive()
+    {
+        return isActive;
     }
 };
