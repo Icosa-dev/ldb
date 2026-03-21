@@ -15,3 +15,13 @@ target_link_libraries(
 )
 include(GoogleTest)
 gtest_discover_tests(BinaryTreeTest)
+
+add_executable(
+    TableTest
+    "TableTest.cpp"
+)
+target_link_libraries(
+    TableTest
+    GTest::gtest_main
+)
+gtest_discover_tests(TableTest)
