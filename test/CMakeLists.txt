@@ -1,6 +1,5 @@
 include(../cmake/CPM.cmake)
 CPMAddPackage("gh:google/googletest#v1.17.0")
-CPMAddPackage("gh:boostorg/boost#boost-1.90.0")
 
 enable_testing()
 

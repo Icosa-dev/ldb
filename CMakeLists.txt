@@ -12,7 +12,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 ### Package Management
 include(cmake/CPM.cmake)
-CPMAddPackage("gh:boostorg/boost#boost-1.90.0")
 CPMAddPackage("gh:Cyan4973/xxHash#v0.8.3")
 
 add_compile_options(-Wall -Wextra)
@@ -26,8 +25,6 @@ target_include_directories(ldb PRIVATE
 )
 target_link_libraries(ldb PRIVATE 
     xxhash
-    Boost::multiprecision
-    Boost::uuid
 )
 
 add_subdirectory(
