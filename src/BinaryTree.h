@@ -6,10 +6,11 @@
 
 #pragma once
 
+#include <cstdint>
 template <typename T>
 struct Node
 {
-    int key;
+    uint32_t key;
     T value;
     Node *left, *right;
 
@@ -33,7 +34,7 @@ private:
         }
     }
 
-    Node<T> *DeleteRecursive(Node<T> *current, int key)
+    Node<T> *DeleteRecursive(Node<T> *current, uint32_t key)
     {
         if (!current)
             return nullptr;
@@ -73,7 +74,7 @@ private:
         return node;
     }
 
-    Node<T> *InsertRecursive(Node<T> *node, int key, T value)
+    Node<T> *InsertRecursive(Node<T> *node, uint32_t key, T value)
     {
         if (node == nullptr)
             return new Node<T>(key, value);
@@ -86,7 +87,7 @@ private:
         return node;
     }
 
-    Node<T> *GetNodeRecursive(Node<T> *node, int key)
+    Node<T> *GetNodeRecursive(Node<T> *node, uint32_t key)
     {
         if (!node)
             return nullptr;
@@ -107,17 +108,17 @@ public:
         Clear(root);
     }
 
-    inline void InsertNode(int key, T value)
+    inline void InsertNode(uint32_t key, T value)
     {
         root = InsertRecursive(root, key, value);
     }
 
-    inline void DeleteNode(int key)
+    inline void DeleteNode(uint32_t key)
     {
         root = DeleteRecursive(root, key);
     }
 
-    inline Node<T> *GetNode(int key)
+    inline Node<T> *GetNode(uint32_t key)
     {
         return GetNodeRecursive(root, key);
     }
