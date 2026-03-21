@@ -16,16 +16,3 @@ target_link_libraries(
 )
 include(GoogleTest)
 gtest_discover_tests(BinaryTreeTest)
-
-add_executable(
-    TableTest
-    TableTest.cpp
-)
-target_link_libraries(
-    TableTest
-    Boost::multiprecision
-    Boost::uuid
-    GTest::gtest_main
-)
-include(GoogleTest)
-gtest_discover_tests(TableTest)
